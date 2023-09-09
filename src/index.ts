@@ -12,7 +12,7 @@ if (process.env.NODE_ENV && process.env.NODE_ENV === "development") {
       origin: "*",
       credentials: true,
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    })
+    }),
   ); //before routes
 } else {
   app.use(cors({ origin: "www.ictmeetupv7.com" }));
@@ -21,7 +21,10 @@ if (process.env.NODE_ENV && process.env.NODE_ENV === "development") {
 app.get("/", (req, res) => {
   res.send("ICt v7 API is Working!");
 });
+
+app.use(express.json());
 app.use("/api", indexRoutes);
+
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}`);
   console.log(`http://localhost:${PORT}`);
