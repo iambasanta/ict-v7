@@ -11,6 +11,6 @@ export const postgres = {
 };
 
 export const emailSender = {
-  user: process.env.EMAIL_USER,
+  address: process.env.EMAIL_ADDRESS,
   password: process.env.EMAIL_PASSWORD,
 };

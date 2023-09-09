@@ -30,7 +30,7 @@ export const sendEmail = async (
   let config = {
     service: "gmail",
     auth: {
-      user: emailSender.user,
+      user: emailSender.address,
       pass: emailSender.password,
     },
   };
@@ -63,7 +63,7 @@ export const sendEmail = async (
   };
 
   let message = {
-    from: emailSender.user,
+    from: emailSender.address,
     to: emailReceiver,
     subject: "Please Verify Your Email Address",
     html: mailGenerator.generate(email),
