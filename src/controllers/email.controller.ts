@@ -30,7 +30,7 @@ export const sendEmail = async (
   let config = {
     service: "gmail",
     auth: {
-      user: emailSender.user,
+      user: emailSender.address,
       pass: emailSender.password,
     },
   };
