@@ -3,11 +3,7 @@ import nodemailer from "nodemailer";
 import Mailgen from "mailgen";
 
 import { emailSender } from "../utils/env";
-
-const isValidEmail = (email: string) => {
-  const regx = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,})$/;
-  return regx.test(email);
-};
+import { isValidEmail } from "../helpers/validator";
 
 export const sendEmail = async (
   req: Request,
@@ -27,7 +23,7 @@ export const sendEmail = async (
     return next();
   }
 
-  let config = {
+  const config = {
     service: "gmail",
     auth: {
       user: emailSender.address,
@@ -35,9 +31,9 @@ export const sendEmail = async (
     },
   };
 
-  let transporter = nodemailer.createTransport(config);
+  const transporter = nodemailer.createTransport(config);
 
-  let mailGenerator = new Mailgen({
+  const mailGenerator = new Mailgen({
     theme: "default",
     product: {
       name: "Prime IT Club",
@@ -45,7 +41,7 @@ export const sendEmail = async (
     },
   });
 
-  let email = {
+  const email = {
     body: {
       name: username,
       intro:
@@ -62,8 +58,8 @@ export const sendEmail = async (
     },
   };
 
-  let message = {
-    from: emailSender.user,
+  const message = {
+    from: emailSender.address,
     to: emailReceiver,
     subject: "Please Verify Your Email Address",
     html: mailGenerator.generate(email),
