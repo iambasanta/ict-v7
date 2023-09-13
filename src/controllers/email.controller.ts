@@ -1,75 +1,46 @@
 import { NextFunction, Request, Response } from "express";
-import nodemailer from "nodemailer";
-import Mailgen from "mailgen";
 
-import { emailSender } from "../utils/env";
 import { isValidEmail } from "../helpers/validator";
+import { sendEmail } from "../helpers/email.helper";
 
-export const sendEmail = async (
+export const emailHandler = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  const username = req.body?.username;
-  const emailReceiver = req.body?.email;
+  const receiver = req.body?.email;
 
-  if (!emailReceiver) {
+  if (!receiver) {
     res.status(400).json({ message: "No email provided." });
     return next();
   }
 
-  if (!isValidEmail(emailReceiver)) {
+  if (!isValidEmail(receiver)) {
     res.status(400).json({ error: "Invalid email format." });
     return next();
   }
 
-  const config = {
-    service: "gmail",
-    auth: {
-      user: emailSender.address,
-      pass: emailSender.password,
-    },
-  };
+  // email content in plain html and css
+  const emailContent = `
+    <html>
+      <head>
+        <style>
+          /* add sytles*/
+        </style>
+      </head>
+      <body>
+        <h1>You received a test mail!</h1>
+      </body>
+    </html>
+  `;
 
-  const transporter = nodemailer.createTransport(config);
-
-  const mailGenerator = new Mailgen({
-    theme: "default",
-    product: {
-      name: "Prime IT Club",
-      link: "https://primeitclub.com/",
-    },
-  });
-
-  const email = {
-    body: {
-      name: username,
-      intro:
-        "Welcome to ICT Meetup V7.0! To complete your registration, we need to verify your email address. ",
-      action: {
-        instructions: "Please click the button below to confirm your email: ",
-        button: {
-          color: "#123ABC",
-          text: "Verify Email",
-          link: "https://primeitclub.com/",
-        },
-      },
-      outro: "Thank you for registering with us!",
-    },
-  };
-
-  const message = {
-    from: emailSender.address,
-    to: emailReceiver,
-    subject: "Please Verify Your Email Address",
-    html: mailGenerator.generate(email),
-  };
+  const subject = "Test mail";
 
   try {
-    await transporter.sendMail(message);
-    return res.status(201).json({ message: "Mail has been sent." });
+    await sendEmail(receiver, subject, emailContent);
+    return res.status(201).json({ message: "Your email has been sent." });
   } catch (error) {
-    console.log("ERROR: ", error);
-    return res.status(500).json({ message: "Faild to send email." });
+    console.error("ERROR: ", error);
+    return res.status(500).json({ message: "Failed to send an email." });
   }
 };

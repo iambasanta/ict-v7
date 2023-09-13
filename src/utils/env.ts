@@ -10,7 +10,7 @@ export const postgres = {
   database: process.env.POSTGRES_DATABASE,
 };
 
-export const emailSender = {
+export const sender = {
   address: process.env.EMAIL_ADDRESS,
   password: process.env.EMAIL_PASSWORD,
 };
