@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-import { sender } from "../utils/env";
+import { sender } from "../utils/env.util";
 
 export const sendEmail = async (
   receiver: string,

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-import { isValidEmail } from "../helpers/validator";
+import { isValidEmail } from "../helpers/validate.helper";
 import { sendEmail } from "../helpers/email.helper";
 
 export const emailHandler = async (

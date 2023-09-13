@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { join } from "path";
 import { DataSource } from "typeorm";
-import { postgres } from "../utils/env";
+import { postgres } from "../utils/env.util";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
