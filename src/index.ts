@@ -3,6 +3,7 @@ import "dotenv/config";
 import cors from "cors";
 import morgan from "morgan";
 import indexRoutes from "./routes/index.routes";
+import { AppDataSource } from "./config/data-source";
 const app = express();
 const PORT = process.env.PORT || 8000;
 
@@ -18,15 +19,17 @@ if (process.env.NODE_ENV && process.env.NODE_ENV === "development") {
   app.use(cors({ origin: "www.ictmeetupv7.com" }));
 }
 
-app.get("/", (req, res) => {
-  res.send("ICt v7 API is Working!");
-});
+AppDataSource.initialize()
+  .then(() => {
+    app.use(express.json());
+    app.use("/api", indexRoutes);
 
-app.use(express.json());
-app.use("/api", indexRoutes);
-
-app.listen(PORT, () => {
-  console.log(`Listening on ${PORT}`);
-  console.log(`http://localhost:${PORT}`);
-});
+    console.log("DATABASE CONNECTION ESTABLISHED");
+    app.listen(PORT, () => {
+      console.log(`Listening on ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.log("ERROR: ", error);
+  });
 export default app;
