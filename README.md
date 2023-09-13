@@ -53,3 +53,9 @@ Make sure you have installed `docker` in your system.
 ```bash
 docker-compose  up -d --build
 ```
+
+- Access database via terminal
+
+```bash
+docker exec -it ict_pg psql -U root -d ict_meetup_v7
+```
