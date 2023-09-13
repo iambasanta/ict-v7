@@ -3,7 +3,7 @@ export const port = process.env.PORT || 8000;
 export const jwtSecret = process.env.JWT_SECRET;
 
 export const postgres = {
-  host: process.env.POSTGRES,
+  host: process.env.POSTGRES_HOST,
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   port: process.env.POSTGRES_PORT || 5432,
